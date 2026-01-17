@@ -317,8 +317,8 @@ class MobileEnhancements {
             const vCard = `BEGIN:VCARD
 VERSION:3.0
 FN:Weblithic
-TEL:+91-XXX-XXX-XXXX
-EMAIL:info@weblithic.com
+TEL:+91-8103276050
+EMAIL:support@weblithic.com
 URL:https://weblithic.com
 END:VCARD`;
 

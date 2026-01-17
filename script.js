@@ -176,18 +176,34 @@ contactForm.addEventListener('submit', function (e) {
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
     submitBtn.disabled = true;
 
-    // Simulate form submission (replace with actual API call)
-    setTimeout(() => {
-        // Reset form
-        contactForm.reset();
-
-        // Reset button
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-
-        // Show success message
-        showNotification('Thank you! Your message has been sent successfully.', 'success');
-    }, 1500);
+    // Actual API Call
+    fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, subject, message }),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to send message');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Reset form
+            contactForm.reset();
+            showNotification('Thank you! Your message has been sent successfully.', 'success');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Sorry, something went wrong. Please try again later.', 'error');
+        })
+        .finally(() => {
+            // Reset button
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        });
 });
 
 // ===================================
@@ -385,7 +401,7 @@ if (copyrightText) {
 console.log('%c🚀 Weblithic', 'color: #8b5cf6; font-size: 24px; font-weight: bold;');
 console.log('%cWeb Development & Software Solutions', 'color: #06b6d4; font-size: 14px;');
 console.log('%cVisit us at: https://weblithic.com', 'color: #ec4899; font-size: 12px;');
-console.log('%c💼 Interested in working with us? Contact: info@weblithic.com', 'color: #ffffff; font-size: 12px;');
+console.log('%c💼 Interested in working with us? Contact: support@weblithic.com', 'color: #ffffff; font-size: 12px;');
 
 // ===================================
 // Performance Monitoring

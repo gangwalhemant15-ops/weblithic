@@ -1,0 +1,12 @@
+{
+  "name": "weblithic",
+  "version": "1.0.0",
+  "description": "Weblithic Web Development & Software Solutions Website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.8"
+  }
+}
