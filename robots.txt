@@ -1,0 +1,18 @@
+# Weblithic Robots.txt
+# This file tells search engine crawlers which pages or files they can or can't request from your site.
+
+# Allow all search engines to crawl the entire site
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://weblithic.com/sitemap.xml
+
+# Disallow indexing of specific files/directories (if needed)
+# Uncomment and modify as needed:
+# Disallow: /admin/
+# Disallow: /private/
+# Disallow: /*.json$
+
+# Crawl-delay (optional, adjust if needed)
+# Crawl-delay: 10

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Weblithic</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../styles.css">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            max-width: 450px;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        .login-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            padding: 0.875rem 1rem;
+            border-radius: 12px;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary);
+            color: var(--text-primary);
+            box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.25);
+        }
+
+        .form-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 0.875rem;
+            font-weight: 600;
+            border-radius: 12px;
+        }
+
+        .alert {
+            border-radius: 12px;
+            border: none;
+        }
+
+        .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1><i class="fas fa-code me-2" style="color: var(--primary);"></i>Weblithic</h1>
+                <p class="text-secondary">Admin Panel Login</p>
+            </div>
+
+            <div id="errorMessage" class="alert alert-danger" style="display: none;"></div>
+
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="email" placeholder="admin@weblithic.com" required
+                        autofocus>
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-login" id="loginBtn">
+                    <span id="loginText">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </span>
+                    <span id="loginSpinner" style="display: none;">
+                        <span class="spinner-border spinner-border-sm me-2"></span>Logging in...
+                    </span>
+                </button>
+            </form>
+
+            <div class="text-center mt-4">
+                <a href="../index.html" class="text-secondary" style="text-decoration: none;">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Website
+                </a>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <small class="text-secondary">
+                <i class="fas fa-info-circle me-1"></i>
+                First time? Check the README for Firebase setup instructions
+            </small>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    <script src="../js/firebase-config.js"></script>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginText = document.getElementById('loginText');
+        const loginSpinner = document.getElementById('loginSpinner');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Check if user is already logged in
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // User is already logged in, redirect to dashboard
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+        // Handle login form submission
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            // Hide previous errors
+            errorMessage.style.display = 'none';
+
+            // Show loading state
+            loginBtn.disabled = true;
+            loginText.style.display = 'none';
+            loginSpinner.style.display = 'inline-block';
+
+            try {
+                // Attempt to sign in
+                await firebase.auth().signInWithEmailAndPassword(email, password);
+
+                // Success - redirect will happen automatically via onAuthStateChanged
+                console.log('Login successful');
+
+            } catch (error) {
+                // Reset button state
+                loginBtn.disabled = false;
+                loginText.style.display = 'inline-block';
+                loginSpinner.style.display = 'none';
+
+                // Show error message
+                let errorText = 'Invalid email or password';
+
+                if (error.code === 'auth/user-not-found') {
+                    errorText = 'No account found with this email';
+                } else if (error.code === 'auth/wrong-password') {
+                    errorText = 'Incorrect password';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorText = 'Invalid email format';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorText = 'Too many failed attempts. Please try again later';
+                }
+
+                errorMessage.textContent = errorText;
+                errorMessage.style.display = 'block';
+
+                console.error('Login error:', error);
+            }
+        });
+
+        // Clear error on input
+        emailInput.addEventListener('input', () => {
+            errorMessage.style.display = 'none';
+        });
+
+        passwordInput.addEventListener('input', () => {
+            errorMessage.style.display = 'none';
+        });
+    </script>
+
+</body>
+
+</html>
