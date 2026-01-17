@@ -234,27 +234,54 @@ After deployment, update these files with your actual domain:
 
 **Admin Panel:**
 - Login: `https://your-site.vercel.app/admin/login.html`
-- Use the email/password you created in Firebase
-
----
-
-## 🎯 Next Steps
+- Dashboard: `https://your-site.vercel.app/admin/dashboard.html` (Redirects to login if not authenticated)
+- **Email**: The email you added in Firebase (Step 3.3)
+- **Password**: The password you set for the admin user
 
 ### Test Your Admin Panel
 
 1. Visit `https://your-site.vercel.app/admin/login.html`
-2. Login with admin credentials
-3. Dashboard will load (still being created)
-4. Create a test blog post
-5. Visit blog page to see it appear!
+2. Login with your admin credentials.
+3. Once in the dashboard, click **"New Post"** to add your first article.
+4. Fill in the title, excerpt, and content, then click **"Save Post"**.
+5. Visit `blog.html` to see your new post appear instantly!
 
-### Add Custom Domain (Optional)
+### Add Custom Domain (Weblithic & Hostinger)
 
-1. In Vercel dashboard, go to your project
-2. Click "Settings" > "Domains"
-3. Add your custom domain (e.g., `www.weblithic.com`)
-4. Follow Vercel's DNS configuration instructions
-5. Update all `<meta>` tags and `sitemap.xml` again
+If you bought your domain on **Hostinger**, follow these exact steps to make your site go live at `www.yourdomain.com`:
+
+#### 1. Add Domain in Vercel
+1. In your Vercel Dashboard, go to **Settings** > **Domains**.
+2. Type your domain (e.g., `weblithic.com`) and click **Add**.
+3. Vercel will show two records you need to add to Hostinger:
+   - **A Record**: Value `76.76.21.21`
+   - **CNAME Record**: Value `cname.vercel-dns.com`
+
+#### 2. Configure Hostinger DNS
+1. Log in to [Hostinger Control Panel](https://hpanel.hostinger.com).
+2. Go to **Domains** > **[Your Domain]** > **Manage**.
+3. Click **DNS / Nameservers** in the left sidebar.
+4. **Delete** any existing A records with Host `@` and CNAME records with Host `www`.
+5. **Add New Records**:
+   - **Type**: `A` | **Name**: `@` | **Points to**: `76.76.21.21` | **TTL**: `3600`
+   - **Type**: `CNAME` | **Name**: `www` | **Points to**: `cname.vercel-dns.com` | **TTL**: `3600`
+6. Click **Add Record** for each.
+
+#### 3. Verify & Wait
+1. Go back to Vercel and click **Refresh**.
+2. It might take 5 minutes to 24 hours for DNS to "propagate" (usually happens in 10-15 mins).
+3. Once you see a green "Valid Configuration" badge, your site is LIVE! 🚀
+
+### Set Up Contact Form (SMTP)
+
+To enable your contact form at `support@weblithic.com`, you must add these **Environment Variables** in your Vercel Dashboard (**Settings** > **Environment Variables**):
+
+1.  **SMTP_HOST**: `smtp.hostinger.com` (or your SMTP provider)
+2.  **SMTP_PORT**: `465` (SSL) or `587` (TLS)
+3.  **SMTP_USER**: `support@weblithic.com`
+4.  **SMTP_PASS**: Your email password
+
+Once added, redeploy your project or trigger a new commit for the changes to take effect!
 
 ### Set Up Firebase Hosting (Alternative to Vercel)
 

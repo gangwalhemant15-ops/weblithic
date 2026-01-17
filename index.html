@@ -1214,6 +1214,68 @@
 
     <!-- Custom JavaScript -->
     <script src="script.js"></script>
+
+    <!-- Firebase & Dynamic Blog Loading -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/blog-manager.js"></script>
+
+    <script>
+        // Load latest 3 blog posts on homepage
+        window.addEventListener('firebaseReady', async () => {
+            const blogContainer = document.querySelector('#blog .row');
+            if (!blogContainer) return;
+
+            const result = await blogManager.getAllPosts({ status: 'published' });
+
+            if (result.success && result.posts.length > 0) {
+                // Clear existing static posts
+                blogContainer.innerHTML = '';
+
+                // Show only latest 3
+                const latestPosts = result.posts.slice(0, 3);
+
+                latestPosts.forEach((post, index) => {
+                    const delay = (index + 1) * 100;
+                    const date = post.publishedDate ? post.publishedDate.toLocaleDateString('en-US', {
+                        year: 'numeric', month: 'short', day: 'numeric'
+                    }) : '';
+                    const gradient = post.featuredImage?.gradient || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    const icon = post.featuredImage?.icon || 'fas fa-newspaper';
+
+                    blogContainer.innerHTML += `
+                        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${delay}">
+                            <a href="blog/${post.slug}.html" style="text-decoration: none; color: inherit;">
+                                <article class="blog-card glass-card">
+                                    <div class="blog-image">
+                                        <div class="blog-image-placeholder" style="background: ${gradient};">
+                                            <i class="${icon}" style="font-size: 4rem; color: rgba(255,255,255,0.3);"></i>
+                                        </div>
+                                        <div class="blog-category">${post.category}</div>
+                                    </div>
+                                    <div class="blog-content">
+                                        <div class="blog-meta">
+                                            <span><i class="far fa-calendar"></i> ${date}</span>
+                                            <span><i class="far fa-clock"></i> ${post.readTime || 5} min read</span>
+                                        </div>
+                                        <h3 class="blog-title">${post.title}</h3>
+                                        <p class="blog-excerpt">${post.excerpt}</p>
+                                        <span class="blog-link">
+                                            Read More <i class="fas fa-arrow-right ms-2"></i>
+                                        </span>
+                                    </div>
+                                </article>
+                            </a>
+                        </div>
+                    `;
+                });
+
+                // Refresh AOS
+                if (typeof AOS !== 'undefined') AOS.refresh();
+            }
+        });
+    </script>
 </body>
 
 </html>

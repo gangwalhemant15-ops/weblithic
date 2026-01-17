@@ -136,7 +136,7 @@ Modify portfolio cards in the `#portfolio` section with your own projects.
 
 Update contact details in `index.html`:
 - Location: Indore, Madhya Pradesh, India
-- Email: info@weblithic.com
+- Email: support@weblithic.com
 - Phone: +91 XXX XXX XXXX
 
 ## 🌐 Deployment
@@ -198,7 +198,7 @@ Try the Konami Code: ↑ ↑ ↓ ↓ ← → ← → B A
 ## 🤝 Support
 
 For support or inquiries, contact:
-- Email: info@weblithic.com
+- Email: support@weblithic.com
 - Website: [weblithic.com](#)
 
 ---

@@ -17,66 +17,56 @@ class BlogPagination {
         // Check if we're on blog.html page
         if (!document.getElementById('blog-posts-container')) return;
 
-        // Load blog posts
-        await this.loadBlogPosts();
+        // Wait for Firebase to be ready before loading posts
+        window.addEventListener('firebaseReady', async () => {
+            await this.loadBlogPosts();
+            this.renderPage(1);
+            console.log('%c✓ Blog Pagination Ready (Firestore)', 'color: #10b981; font-size: 14px;');
+        });
 
         // Setup event listeners
         this.setupEventListeners();
-
-        // Render first page
-        this.renderPage(1);
-
-        console.log('%c✓ Blog Pagination Ready', 'color: #10b981; font-size: 14px;');
     }
 
     async loadBlogPosts() {
-        // TODO: Replace with actual API call when backend is ready
-        // For now, using static data
-        this.allPosts = [
-            {
-                id: 1,
-                title: 'Latest Web Design Trends in 2026',
-                excerpt: 'Discover the cutting-edge design trends that are shaping the future of web development and user experience.',
-                category: 'Web Design',
-                date: 'Jan 15, 2026',
-                readTime: '5 min read',
-                slug: 'web-design-trends-2026',
-                gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                icon: 'fas fa-palette'
-            },
-            {
-                id: 2,
-                title: 'Why Choose React for Your Next Project',
-                excerpt: 'Explore the benefits of using React for building modern, scalable web applications that users love.',
-                category: 'Development',
-                date: 'Jan 10, 2026',
-                readTime: '8 min read',
-                slug: 'why-choose-react',
-                gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                icon: 'fab fa-react'
-            },
-            {
-                id: 3,
-                title: 'The Importance of Mobile-First Design',
-                excerpt: 'Learn why mobile-first approach is crucial for modern web development and how it improves user engagement.',
-                category: 'Mobile',
-                date: 'Jan 5, 2026',
-                readTime: '6 min read',
-                slug: 'mobile-first-design',
-                gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-                icon: 'fas fa-mobile-alt'
-            }
-        ];
-
-        // When backend is ready, use this instead:
-        /*
-        try {
-          const response = await fetch('/api/blog/posts');
-          this.allPosts = await response.json();
-        } catch (error) {
-          console.error('Error loading blog posts:', error);
+        if (!window.blogManager) {
+            console.error('BlogManager not found');
+            return;
         }
-        */
+
+        const result = await window.blogManager.getAllPosts({ status: 'published' });
+
+        if (result.success) {
+            this.allPosts = result.posts.map(post => ({
+                ...post,
+                date: post.publishedDate ? post.publishedDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                }) : 'Loading...',
+                readTime: `${post.readTime || 5} min read`,
+                gradient: post.featuredImage?.gradient || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                icon: post.featuredImage?.icon || 'fas fa-newspaper'
+            }));
+        } else {
+            console.error('Error loading posts from Firestore:', result.error);
+            // Fallback to static data if Firestore fails or is empty
+            if (this.allPosts.length === 0) {
+                this.allPosts = [
+                    {
+                        id: 'fallback-1',
+                        title: 'Setting up your Blog',
+                        excerpt: 'Login to the admin panel to add your first post!',
+                        category: 'System',
+                        date: new Date().toLocaleDateString(),
+                        readTime: '1 min read',
+                        slug: '#',
+                        gradient: 'linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%)',
+                        icon: 'fas fa-info-circle'
+                    }
+                ];
+            }
+        }
     }
 
     renderPage(pageNumber) {
