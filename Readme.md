@@ -137,7 +137,7 @@ Modify portfolio cards in the `#portfolio` section with your own projects.
 Update contact details in `index.html`:
 - Location: Indore, Madhya Pradesh, India
 - Email: support@weblithic.com
-- Phone: +91 XXX XXX XXXX
+- Phone: +91 8103276050
 
 ## 🌐 Deployment
 
