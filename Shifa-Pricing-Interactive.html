@@ -34,6 +34,28 @@
   .hero-price .desc{color:var(--muted);font-size:16px;margin:16px 0;max-width:600px;margin-left:auto;margin-right:auto;}
   .hero-price .savings{display:inline-block;background:#fff8e8;border:2px solid var(--gold);
     padding:12px 24px;border-radius:999px;font-size:15px;font-weight:700;color:#7a5c12;margin-top:16px;}
+  /* Value-led hero: lead with what they get; the price is revealed on click. */
+  .hero-price .hero-headline{font-size:22px;font-weight:800;color:var(--green-dark);
+    line-height:1.35;margin:6px auto 4px;max-width:640px;}
+  .hero-reveal{margin-top:14px;}
+  .hero-reveal summary{display:inline-block;cursor:pointer;list-style:none;background:var(--green);
+    color:#fff;font-weight:700;font-size:15px;padding:12px 28px;border-radius:999px;
+    box-shadow:0 6px 18px rgba(15,61,39,.18);transition:.2s;}
+  .hero-reveal summary::-webkit-details-marker{display:none;}
+  .hero-reveal summary::marker{content:'';}
+  .hero-reveal summary:hover{background:var(--green-dark);transform:translateY(-1px);}
+  .hero-reveal[open] summary{background:var(--green-dark);margin-bottom:6px;}
+  .hero-price .amount em{font-size:18px;font-weight:700;color:var(--muted);font-style:normal;}
+  /* ROI / value-in-context box */
+  .roi{background:linear-gradient(135deg,#eef7f1,#ffffff);border:2px solid var(--green);
+    border-radius:16px;padding:26px 28px;margin:28px 0;}
+  .roi h2{margin:0 0 8px;}
+  .roi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0 6px;}
+  .roi-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center;}
+  .roi-box .num{font-size:24px;font-weight:900;color:var(--green-dark);line-height:1.1;}
+  .roi-box .cap{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.35;}
+  .roi-note{font-size:14.5px;color:#2b3a33;margin:10px 0 0;}
+  @media(max-width:640px){.roi-grid{grid-template-columns:repeat(2,1fr);}}
   
   @media(max-width:640px){
     .hero-price{padding:30px 20px;}
@@ -134,14 +156,49 @@
 
 <div class="wrap">
 
-  <!-- HERO PRICING -->
+  <!-- HERO PRICING (value-led; price revealed on click) -->
   <div class="hero-price">
     <div class="label">Complete Platform</div>
-    <div class="amount"><span>₹</span>47,500</div>
+    <div class="hero-headline">A purpose-built Order Management System for Shifa — 17 complete modules, weekend staff training and full source-code handover.</div>
     <div class="desc">
-      One-time payment · 12 complete modules · Staff training included · 3 months post-launch support · Source code handover
+      One-time build · 17 complete modules · Weekend staff training · 1 month post-launch support · Source code handover · <strong>deployment &amp; hosting covered by us for the first 3 months</strong>
     </div>
-    <div class="savings">💰 Save 57% vs. alternatives · Pay ₹47,500 instead of ₹1.10 lakh+</div>
+    <details class="hero-reveal">
+      <summary>💰 View the investment</summary>
+      <div class="amount"><span>₹</span>47,500 <em>one-time</em></div>
+      <div class="savings">₹68,000 of delivered value for ₹47,500 · Save 57% vs. alternatives</div>
+    </details>
+  </div>
+
+  <!-- ROI / VALUE-IN-CONTEXT -->
+  <div class="roi">
+    <h2>📈 What it costs vs. what you sell</h2>
+    <p class="section-intro" style="margin:0;">
+      At roughly <strong>3,000 orders/month</strong> and an average order of <strong>₹300</strong>, you turn over about
+      <strong>₹9,00,000 every month</strong> (~₹1.08 crore/year). Here's how the platform compares to that:
+    </p>
+    <div class="roi-grid">
+      <div class="roi-box">
+        <div class="num">₹9,00,000</div>
+        <div class="cap">Your monthly sales<br>(3,000 × ₹300)</div>
+      </div>
+      <div class="roi-box">
+        <div class="num">₹47,500</div>
+        <div class="cap">One-time build — about <strong>5%</strong> of a single month's sales</div>
+      </div>
+      <div class="roi-box">
+        <div class="num">~₹4–6K<span style="font-size:13px;">/mo</span></div>
+        <div class="cap">Running cost — under <strong>₹2 per order</strong> (mostly WhatsApp)</div>
+      </div>
+      <div class="roi-box">
+        <div class="num">3 months</div>
+        <div class="cap">Deployment &amp; hosting on us; after that ~₹0–1,500/mo</div>
+      </div>
+    </div>
+    <p class="roi-note">
+      In short: the entire build is about <strong>one-twentieth of one month's revenue</strong>, and day-to-day running
+      costs stay under <strong>₹2 per order</strong> — so the system effectively pays for itself within the first few days of use.
+    </p>
   </div>
 
   <!-- SAVINGS COMPARISON -->
@@ -238,8 +295,8 @@
 
     <div class="why-card">
       <div class="icon">🚀</div>
-      <h3>3-Month Support</h3>
-      <p>Post-launch support included. We're with you until your team is confident.</p>
+      <h3>Launch Support</h3>
+      <p>1 month of post-launch support included, plus deployment &amp; hosting covered by us for the first 3 months. Optional AMC after that.</p>
     </div>
   </div>
 
@@ -261,7 +318,8 @@
   <!-- MODULES BREAKDOWN -->
   <h2>📦 What's Included</h2>
   <p class="section-intro">
-    12 complete modules covering everything from order capture to financial reconciliation.
+    17 complete modules covering everything from order capture to financial reconciliation, sales
+    intelligence, forecasting and a mobile app — all bundled into the one all-inclusive price.
   </p>
 
   <div class="card">
@@ -347,10 +405,49 @@
           <td>Salesperson profiles, verification, ID proof upload, self-service profile updates</td>
           <td class="num">5,000</td>
         </tr>
+        <tr>
+          <td colspan="4" style="background:#eef7f1;color:#1f5d3f;font-weight:700;">
+            ✨ Phase 2 Enhancements — included at no extra cost
+          </td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td><strong>Customer 360 &amp; CRM Intelligence</strong></td>
+          <td>Full customer profile with delivery-reliability risk score, segment tags, notes timeline, products bought and order history; prepaid nudge for risky customers</td>
+          <td class="num">4,000</td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td><strong>Sales Performance &amp; Targets (Salesperson 360)</strong></td>
+          <td>Team leaderboard, per-rep KPIs (orders, revenue, conversion, delivery success) and monthly sales-target tracking so admins can coach and compare the team</td>
+          <td class="num">4,500</td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td><strong>Business Analytics &amp; Forecasting</strong></td>
+          <td>Customer retention cohorts (repeat-buyer rates), revenue &amp; product-demand forecasting, plus the automated statistical insights engine (anomalies, low-stock, RTO risk)</td>
+          <td class="num">5,000</td>
+        </tr>
+        <tr>
+          <td>16</td>
+          <td><strong>Mobile App, Offline &amp; Push</strong></td>
+          <td>Installable phone app (PWA), offline order capture that auto-syncs on reconnect, phone-camera barcode scanning for packing, and browser push notifications to staff</td>
+          <td class="num">5,500</td>
+        </tr>
+        <tr>
+          <td>17</td>
+          <td><strong>Staff Announcements &amp; Communication</strong></td>
+          <td>Admin-posted announcement banners every staff member sees on login — internal comms without WhatsApp groups</td>
+          <td class="num">1,500</td>
+        </tr>
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="3"><strong>Total Value — Complete Platform</strong></td>
+          <td colspan="3"><strong>Total Delivered Value (17 modules)</strong></td>
+          <td class="num"><strong>₹68,000</strong></td>
+        </tr>
+        <tr>
+          <td colspan="3"><strong>🌿 Your All-Inclusive Price</strong></td>
           <td class="num"><strong>₹47,500</strong></td>
         </tr>
       </tfoot>
@@ -389,7 +486,7 @@
     <div class="plan-card">
       <h3>AMC (Optional)</h3>
       <div class="price">₹6,999/month</div>
-      <div class="desc">Post-launch maintenance (first 3 months)</div>
+      <div class="desc">Optional ongoing maintenance &amp; support (after the included 1-month support)</div>
       <ul>
         <li>Bug fixes & updates</li>
         <li>Feature enhancements</li>
@@ -421,13 +518,13 @@
       <tbody>
         <tr>
           <td><strong>AMC (Optional)</strong></td>
-          <td>First 3 months maintenance & support</td>
+          <td>Optional ongoing maintenance &amp; support (1 month included free, then optional)</td>
           <td class="num">6,999 – 9,999</td>
         </tr>
         <tr>
-          <td><strong>Cloud Hosting</strong></td>
-          <td>AWS/Oracle Cloud (currently Free Tier eligible)</td>
-          <td class="num">0 – 1,500</td>
+          <td><strong>Cloud Hosting &amp; Deployment</strong></td>
+          <td>AWS (Free Tier eligible) — <strong>covered by us for the first 3 months</strong>, borne by you after that</td>
+          <td class="num">0 (first 3 mo), then 0 – 1,500</td>
         </tr>
         <tr>
           <td><strong>WhatsApp API</strong></td>
